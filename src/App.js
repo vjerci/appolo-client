@@ -6,11 +6,13 @@ const TopVideos = () => (
   <Query
     query={gql`
       {
-        topVideos() {
+        topVideos {
             name
             url
             length
-            models
+            models {
+                name
+            }
         }
       }
     `}
