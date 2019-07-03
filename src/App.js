@@ -1,25 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ApolloClient, {gql} from "apollo-boost";
+import { Query, ApolloProvider } from "react-apollo";
+
+const TopVideos = () => (
+  <Query
+    query={gql`
+      {
+        topVideos() {
+            name
+            url
+            length
+            models
+        }
+      }
+    `}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <p>Loading...</p>;
+      if (error) return <p>Error :(</p>;
+
+      return data.topVideos.map(({ name, url, length, models }, index) => (
+        <div key={index}>
+            <p> {name} - {url} - {length} - {models.map(model => model.name).join(',')}</p>
+        </div>
+      ));
+    }}
+  </Query>
+);
+
+const client = new ApolloClient({
+    uri: "http://localhost:4001"
+  });
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+        <TopVideos/>
+    </ApolloProvider>
   );
 }
 
