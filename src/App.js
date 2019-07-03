@@ -31,7 +31,7 @@ const TopVideos = () => (
 );
 
 const client = new ApolloClient({
-    uri: "http://localhost:4001"
+    uri: "http://10.0.0.190:4001"
   });
 
 function App() {
